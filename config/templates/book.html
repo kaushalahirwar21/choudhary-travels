@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Book Your Ride</h2>
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input name="name" class="form-control mb-3" placeholder="Name" required>
+        <input name="phone" class="form-control mb-3" placeholder="Phone" required>
+
+        <input name="pickup" class="form-control mb-3" placeholder="Pickup Location" required>
+        <input name="drop" class="form-control mb-3" placeholder="Drop Location" required>
+
+        <label>Select Start Time</label>
+        <input type="datetime-local" name="start_time" class="form-control mb-3" required>
+
+        <button class="btn btn-primary">Check Availability</button>
+    </form>
+</div>
+
+{% endblock %}
