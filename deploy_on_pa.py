@@ -3,8 +3,8 @@ import time
 import sys
 import json
 
-USERNAME = "kaushalahirwar714"
-TOKEN = "e6349077c1af3ee730e05a036b2ef0afbb69dd53"
+USERNAME = "Choudharytravels"
+TOKEN = "af769286d5ee5ae884921b708cd938f723e111a6"
 GITHUB_URL = "https://github.com/kaushalahirwar21/choudhary-travels.git"
 API_BASE = f"https://www.pythonanywhere.com/api/v0/user/{USERNAME}"
 
