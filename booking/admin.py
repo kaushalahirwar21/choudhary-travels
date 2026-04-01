@@ -40,6 +40,27 @@ class BookingAdmin(admin.ModelAdmin):
     # 🔥 ordering latest first
     ordering = ('-start_time',)
 
+    def get_urls(self):
+        from django.urls import path
+        urls = super().get_urls()
+        custom_urls = [
+            path('<int:booking_id>/mark_confirmed/', self.admin_site.admin_view(self.mark_confirmed), name='booking_mark_confirmed'),
+            path('<int:booking_id>/delete_booking/', self.admin_site.admin_view(self.delete_booking_view), name='booking_delete_booking'),
+        ]
+        return custom_urls + urls
+
+    def mark_confirmed(self, request, booking_id):
+        from django.shortcuts import redirect
+        b = Booking.objects.get(id=booking_id)
+        b.status = 'Confirmed'
+        b.save()
+        return redirect('admin:index')
+
+    def delete_booking_view(self, request, booking_id):
+        from django.shortcuts import redirect
+        Booking.objects.filter(id=booking_id).delete()
+        return redirect('admin:index')
+
 
 # 🔥 Register models
 admin.site.register(Car, CarAdmin)

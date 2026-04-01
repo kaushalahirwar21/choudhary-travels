@@ -49,7 +49,7 @@ def book(request):
             car=car,
             start_time__lt=end_time,
             end_time__gt=start_time
-        ).exists()
+        ).exclude(status='Cancelled').exists()
 
         if conflict:
             return render(request, 'book.html', {
@@ -87,7 +87,10 @@ Price: ₹{total_price}"""
         encoded_msg = urllib.parse.quote(message)
         whatsapp_url = f"https://wa.me/919755422892?text={encoded_msg}"
 
-        return redirect(whatsapp_url)
+        return render(request, 'book.html', {
+            'success': True,
+            'whatsapp_url': whatsapp_url
+        })
 
     return render(request, 'book.html')
 

@@ -20,15 +20,12 @@ class Booking(models.Model):
     end_time = models.DateTimeField()
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     total_price = models.FloatField()
-    status = models.CharField(max_length=20, default='Pending')
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Confirmed', 'Confirmed'),
+        ('Cancelled', 'Cancelled'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
 
     def __str__(self):
         return self.name
-    
-STATUS_CHOICES = [
-    ('Pending', 'Pending'),
-    ('Confirmed', 'Confirmed'),
-    ('Cancelled', 'Cancelled'),
-]
-
-status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')    

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Choudhary Travels</title>
+    <title>choudhary-travels.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- 🔥 AOS CSS -->
@@ -15,7 +15,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <!-- 🔥 Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        /* Custom dynamic card hover effects */
+        .card {
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+        }
+        footer {
+            background-color: #1a1a1a !important;
+            color: #ddd !important;
+            padding: 1.5rem 0 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,7 +51,7 @@
 
         <!-- Logo -->
         <a class="navbar-brand fw-bold" href="/">Choudhary Travels</a>
-
+        
         <!-- 🔥 Mobile toggle button -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>

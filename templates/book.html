@@ -22,6 +22,32 @@
 
         <button class="btn btn-primary">Check Availability</button>
     </form>
+    
+    {% if success %}
+    <!-- Auto-trigger Success Modal -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+            myModal.show();
+        });
+    </script>
+
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+          <div class="modal-body p-5">
+            <h2 class="text-success mb-3">✅ Booking Confirmed!</h2>
+            <p>Your request has been saved securely.</p>
+            <p class="text-muted">Please click below to send booking details to the owner via WhatsApp.</p>
+            <a href="{{ whatsapp_url }}" class="btn btn-success btn-lg mt-3" target="_blank">
+               📲 Proceed to WhatsApp
+            </a>
+            <button type="button" class="btn btn-secondary btn-lg mt-3 ms-2" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock %}
