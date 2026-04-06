@@ -3,3 +3,5 @@ gunicorn
 whitenoise
 Pillow
 geopy
+dj-database-url
+psycopg[binary]

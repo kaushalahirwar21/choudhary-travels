@@ -1,76 +1,89 @@
-import requests
-import time
+import os
 import sys
-import json
+import time
 
-USERNAME = "Choudharytravels"
-TOKEN = "af769286d5ee5ae884921b708cd938f723e111a6"
-GITHUB_URL = "https://github.com/kaushalahirwar21/choudhary-travels.git"
+import requests
+
+
+USERNAME = os.environ.get("PYTHONANYWHERE_USERNAME", "your_pythonanywhere_username")
+TOKEN = os.environ.get("PYTHONANYWHERE_API_TOKEN", "")
+GITHUB_URL = os.environ.get(
+    "PYTHONANYWHERE_GITHUB_URL",
+    "https://github.com/kaushalahirwar21/timepass.git",
+)
 API_BASE = f"https://www.pythonanywhere.com/api/v0/user/{USERNAME}"
 
 HEADERS = {
     "Authorization": f"Token {TOKEN}",
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
 }
+
 
 def create_console():
     res = requests.post(
         f"{API_BASE}/consoles/",
         headers=HEADERS,
-        json={"executable": "bash"}
+        json={"executable": "bash"},
     )
     if res.status_code == 201:
         return res.json()["id"]
     print("Failed to create console:", res.text)
     sys.exit(1)
 
+
 def send_input(console_id, command):
-    # send input
     res = requests.post(
         f"{API_BASE}/consoles/{console_id}/send_input/",
         headers=HEADERS,
-        json={"input": command + "\n"}
+        json={"input": command + "\n"},
     )
     return res.status_code == 200
+
 
 def get_output(console_id):
     res = requests.get(
         f"{API_BASE}/consoles/{console_id}/get_latest_output/",
-        headers=HEADERS
+        headers=HEADERS,
     )
     if res.status_code == 200:
         return res.json()["output"]
     return ""
 
+
 def main():
-    print("🚀 Starting deployment to PythonAnywhere...")
+    if USERNAME == "your_pythonanywhere_username" or not TOKEN:
+        print("Set PYTHONANYWHERE_USERNAME and PYTHONANYWHERE_API_TOKEN first.")
+        sys.exit(1)
+
+    print("Starting deployment to PythonAnywhere...")
     print("Creating bash console...")
-    c_id = create_console()
-    print(f"Console ID: {c_id}")
+    console_id = create_console()
+    print(f"Console ID: {console_id}")
     time.sleep(2)
-    
-    print("Sending installation command (this takes several minutes, please be patient)...")
-    
-    # Run pip install, wait for success, then configure django
-    deploy_cmd = f"pip3.10 install --user pythonanywhere && pa_autoconfigure_django.py --python=3.10 {GITHUB_URL}"
-    send_input(c_id, deploy_cmd)
-    
-    print("Waiting for deployment script to finish. Continuously streaming output:")
+
+    print("Sending installation command. This can take several minutes...")
+    deploy_cmd = (
+        "pip3.10 install --user pythonanywhere && "
+        f"pa_autoconfigure_django.py --python=3.10 {GITHUB_URL}"
+    )
+    send_input(console_id, deploy_cmd)
+
+    print("Waiting for deployment output:")
     last_output = ""
     while True:
         try:
-            out = get_output(c_id)
-            if out is not None and len(out) > len(last_output):
-                new_chunk = out[len(last_output):]
-                print(new_chunk, end="", flush=True)
-                last_output = out
-            if "All done!" in out or "Error:" in out or "Traceback" in out:
+            output = get_output(console_id)
+            if output is not None and len(output) > len(last_output):
+                print(output[len(last_output):], end="", flush=True)
+                last_output = output
+            if "All done!" in output or "Error:" in output or "Traceback" in output:
                 break
             time.sleep(5)
         except KeyboardInterrupt:
             break
-            
-    print("\n✅ Deployment finished! Check https://kaushalahirwar714.pythonanywhere.com")
+
+    print(f"\nDeployment finished! Check https://{USERNAME}.pythonanywhere.com")
+
 
 if __name__ == "__main__":
     main()

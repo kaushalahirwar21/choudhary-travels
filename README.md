@@ -115,3 +115,15 @@ MIT License (or your preferred license)
 - Email: kaushalahirwar714@gmail.com
 - contact : 9977949032
 
+## Render Deployment
+
+1. Push this project to a GitHub repository.
+2. In Render, create a new Blueprint and select that repository.
+3. Render will detect `render.yaml` and create:
+   - one Python web service
+   - one PostgreSQL database
+4. After the first deploy, open the Render shell and create an admin user:
+   ```bash
+   python manage.py createsuperuser
+   ```
+5. Visit the generated `onrender.com` URL.
